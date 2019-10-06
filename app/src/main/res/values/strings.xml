@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Gas Records</string>
+    <string name="action_settings">Settings</string>
+    <string name="edit_miles">Mileage at Refill</string>
+    <string name="edit_gallons">Gallons Refilled</string>
+    <string name="edit_cost">Total Cost of Refill</string>
+    <string name="edit_price_per">Price per Gallon</string>
+    <string name="button_send">Send</string>
+</resources>
