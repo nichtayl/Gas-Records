@@ -2,12 +2,10 @@ package com.nicholas.gasrecords
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
 
 import kotlinx.android.synthetic.main.activity_main.*
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -18,6 +16,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.common.api.ApiException
 import android.util.Log
 import kotlinx.android.synthetic.main.content_main.*
+
 
 
 const val EXTRA_MESSAGE = "com.nicholas.gasrecords.MESSAGE"
@@ -31,11 +30,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
@@ -44,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         sign_in_button.visibility = View.VISIBLE
         signed_in_textview.visibility = View.GONE
+        sign_out_button.visibility = View.GONE
 
         sign_in_button.setSize(SignInButton.SIZE_STANDARD)
 
@@ -62,6 +57,13 @@ class MainActivity : AppCompatActivity() {
             val personPhoto         = account.photoUrl
             updateUI(account)
         }
+
+        sign_out_button.setOnClickListener {
+            mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this) {
+                    updateUI(null)
+                }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -76,12 +78,8 @@ class MainActivity : AppCompatActivity() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-
-            // Signed in successfully, show authenticated UI.
             updateUI(account)
         } catch (e: ApiException) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.statusCode)
             updateUI(null)
         }
@@ -92,9 +90,11 @@ class MainActivity : AppCompatActivity() {
             sign_in_button.visibility = View.GONE
             signed_in_textview.visibility = View.VISIBLE
             signed_in_textview.text = resources.getString(R.string.textview_signed_in, account.displayName)
+            sign_out_button.visibility = View.VISIBLE
         } else {
             sign_in_button.visibility = View.VISIBLE
             signed_in_textview.visibility = View.GONE
+            sign_out_button.visibility = View.GONE
         }
     }
 

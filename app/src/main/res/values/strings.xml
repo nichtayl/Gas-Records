@@ -7,4 +7,5 @@
     <string name="edit_price_per">Price per Gallon</string>
     <string name="button_send">Send</string>
     <string name="textview_signed_in">Signed in as %1$s</string>
+    <string name="button_sign_out">Sign Out</string>
 </resources>
